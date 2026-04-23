@@ -1,0 +1,30 @@
+{
+  "name": "cloudaiide",
+  "version": "0.1.0",
+  "private": true,
+  "description": "An AI-powered cloud IDE for building and shipping projects from your browser.",
+  "author": "Utkarsh Pawade <utkarshpawadedcse@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/utkarshpawade/CloudAIIDE.git"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "next": "16.1.1",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.1",
+    "typescript": "^5"
+  }
+}
