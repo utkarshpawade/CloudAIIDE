@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono, Inter } from "next/font/google";
 
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/theme-provider";
+import { Providers } from "@/components/providers";
 
 import "./globals.css";
 
@@ -32,15 +32,10 @@ export default function RootLayout({
         <body
           className={`${inter.variable} ${plexMono.variable} antialiased`}
         >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
+          <Providers>
             {children}
             <Toaster />
-          </ThemeProvider>
+          </Providers>
         </body>
       </html>
   );
