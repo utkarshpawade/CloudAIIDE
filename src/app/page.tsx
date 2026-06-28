@@ -1,5 +1,7 @@
+import { ProjectsView } from "@/features/projects/components/projects-view";
+
 const Home = () => {
-  return <main />;
+  return <ProjectsView />
 };
 
 export default Home;
