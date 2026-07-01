@@ -2,6 +2,7 @@
 
 import { Poppins } from "next/font/google";
 import { SparkleIcon } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
 import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
@@ -10,6 +11,7 @@ import { Kbd } from "@/components/ui/kbd";
 
 import { ProjectsList } from "./projects-list";
 import { ProjectsCommandDialog } from "./projects-command-dialog";
+import { ImportGithubDialog } from "./import-github-dialog";
 import { NewProjectDialog } from "./new-project-dialog";
 
 const font = Poppins({
@@ -19,6 +21,7 @@ const font = Poppins({
 
 export const ProjectsView = () => {
   const [commandDialogOpen, setCommandDialogOpen] = useState(false);
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
   const [newProjectDialogOpen, setNewProjectDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -27,6 +30,10 @@ export const ProjectsView = () => {
         if (e.key === "k") {
           e.preventDefault();
           setCommandDialogOpen(true);
+        }
+        if (e.key === "i") {
+          e.preventDefault();
+          setImportDialogOpen(true);
         }
         if (e.key === "j") {
           e.preventDefault();
@@ -45,6 +52,10 @@ export const ProjectsView = () => {
       <ProjectsCommandDialog
         open={commandDialogOpen}
         onOpenChange={setCommandDialogOpen}
+      />
+      <ImportGithubDialog
+        open={importDialogOpen}
+        onOpenChange={setImportDialogOpen}
       />
       <NewProjectDialog
         open={newProjectDialogOpen}
@@ -68,7 +79,7 @@ export const ProjectsView = () => {
           </div>
 
           <div className="flex flex-col gap-4 w-full">
-            <div className="grid grid-cols-1 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               <Button
                 variant="outline"
                 onClick={() => setNewProjectDialogOpen(true)}
@@ -83,6 +94,23 @@ export const ProjectsView = () => {
                 <div>
                   <span className="text-sm">
                     New
+                  </span>
+                </div>
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setImportDialogOpen(true)}
+                className="h-full items-start justify-start p-4 bg-background border flex flex-col gap-6 rounded-none"
+              >
+                <div className="flex items-center justify-between w-full">
+                  <FaGithub className="size-4" />
+                  <Kbd className="bg-accent border">
+                    ⌘I
+                  </Kbd>
+                </div>
+                <div>
+                  <span className="text-sm">
+                    Import
                   </span>
                 </div>
               </Button>
