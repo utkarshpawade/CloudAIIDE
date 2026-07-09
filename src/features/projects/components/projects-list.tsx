@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
 import { formatDistanceToNow } from "date-fns";
+import { SignUpButton } from "@clerk/nextjs";
+import { useConvexAuth } from "convex/react";
 import { AlertCircleIcon, ArrowRightIcon, GlobeIcon, Loader2Icon } from "lucide-react";
 
 import { Kbd } from "@/components/ui/kbd";
@@ -94,10 +98,46 @@ const ProjectItem = ({
   );
 };
 
-export const ProjectsList = ({ 
+const SignedOutCard = () => {
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="text-xs text-muted-foreground">
+        Your projects
+      </span>
+      <SignUpButton mode="modal">
+        <Button
+          variant="outline"
+          className="h-auto items-start justify-start p-4 bg-background border rounded-none flex flex-col gap-2 group"
+        >
+          <div className="flex items-center justify-between w-full">
+            <span className="font-medium">
+              Sign up to start building
+            </span>
+            <ArrowRightIcon className="size-4 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
+          </div>
+          <span className="text-xs text-muted-foreground text-left whitespace-normal">
+            Create an account to build projects, import from GitHub, and pick up
+            where you left off.
+          </span>
+        </Button>
+      </SignUpButton>
+    </div>
+  );
+};
+
+export const ProjectsList = ({
   onViewAll
 }: ProjectsListProps) => {
+  const { isAuthenticated, isLoading } = useConvexAuth();
   const projects = useProjectsPartial(6);
+
+  if (isLoading) {
+    return <Spinner className="size-4 text-ring" />
+  }
+
+  if (!isAuthenticated) {
+    return <SignedOutCard />;
+  }
 
   if (projects === undefined) {
     return <Spinner className="size-4 text-ring" />

@@ -1,22 +1,32 @@
 /* eslint-disable react-hooks/purity */
 
-import { useMutation, useQuery } from "convex/react";
+import { useConvexAuth, useMutation, useQuery } from "convex/react";
 
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 
 export const useProject = (projectId: Id<"projects">) => {
-  return useQuery(api.projects.getById, { id: projectId });
+  const { isAuthenticated } = useConvexAuth();
+
+  return useQuery(
+    api.projects.getById,
+    isAuthenticated ? { id: projectId } : "skip",
+  );
 };
 
 export const useProjects = () => {
-  return useQuery(api.projects.get);
+  const { isAuthenticated } = useConvexAuth();
+
+  return useQuery(api.projects.get, isAuthenticated ? {} : "skip");
 };
 
 export const useProjectsPartial = (limit: number) => {
-  return useQuery(api.projects.getPartial, {
-    limit,
-  });
+  const { isAuthenticated } = useConvexAuth();
+
+  return useQuery(
+    api.projects.getPartial,
+    isAuthenticated ? { limit } : "skip",
+  );
 };
 
 export const useCreateProject = () => {
