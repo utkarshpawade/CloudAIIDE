@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { Poppins } from "next/font/google";
 import { SparkleIcon } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
@@ -15,6 +16,9 @@ import { ProjectsList } from "./projects-list";
 import { ProjectsCommandDialog } from "./projects-command-dialog";
 import { ImportGithubDialog } from "./import-github-dialog";
 import { NewProjectDialog } from "./new-project-dialog";
+
+// WebGL-only, so keep it off the server render and out of the initial bundle.
+const Strands = dynamic(() => import("@/components/strands"), { ssr: false });
 
 const font = Poppins({
   subsets: ["latin"],
@@ -78,9 +82,38 @@ export const ProjectsView = () => {
         open={newProjectDialogOpen}
         onOpenChange={setNewProjectDialogOpen}
       />
-      <div className="relative min-h-screen bg-sidebar flex flex-col items-center justify-center p-6 md:p-16">
+      <div className="relative min-h-screen overflow-hidden bg-sidebar flex flex-col items-center justify-center p-6 md:p-16">
 
-        <div className="absolute top-0 right-0 flex items-center gap-2 p-4 md:p-6">
+        <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
+          <Strands
+            colors={["#F97316", "#7C3AED", "#06B6D4"]}
+            count={3}
+            speed={0.5}
+            amplitude={1}
+            waviness={1}
+            thickness={0.7}
+            glow={2.6}
+            taper={3}
+            spread={1}
+            intensity={0.6}
+            saturation={2}
+            opacity={1}
+            scale={1.5}
+            glass={false}
+            refraction={1}
+            dispersion={1}
+            glassSize={1}
+            hueShift={0}
+          />
+        </div>
+
+        {/* Scrim so the centered content stays legible over the glow. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-0 bg-sidebar/40"
+        />
+
+        <div className="absolute top-0 right-0 z-20 flex items-center gap-2 p-4 md:p-6">
           {!isLoading && (
             isAuthenticated ? (
               <UserButton />
@@ -101,7 +134,7 @@ export const ProjectsView = () => {
           )}
         </div>
 
-        <div className="w-full max-w-sm mx-auto flex flex-col gap-4 items-center">
+        <div className="relative z-10 w-full max-w-sm mx-auto flex flex-col gap-4 items-center">
 
           <div className="flex justify-between gap-4 w-full items-center">
 
