@@ -14,14 +14,11 @@ no local setup, no containers to manage, no deploy step to see it run.
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![Convex](https://img.shields.io/badge/Convex-realtime-EE342F?style=for-the-badge&logo=convex&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
 
 ![Clerk](https://img.shields.io/badge/Auth-Clerk-6C47FF?style=flat-square&logo=clerk&logoColor=white)
 ![Inngest](https://img.shields.io/badge/Jobs-Inngest-000000?style=flat-square&logo=inngest&logoColor=white)
 ![Groq](https://img.shields.io/badge/LLM-Groq-F55036?style=flat-square&logo=groq&logoColor=white)
 ![WebContainers](https://img.shields.io/badge/Runtime-WebContainers-2456E5?style=flat-square)
-![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)
-![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)
 
 </div>
 
