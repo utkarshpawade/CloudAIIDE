@@ -3,11 +3,13 @@
 import { Poppins } from "next/font/google";
 import { SparkleIcon } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Kbd } from "@/components/ui/kbd";
+import { useRequireAuth } from "@/features/auth/hooks/use-require-auth";
 
 import { ProjectsList } from "./projects-list";
 import { ProjectsCommandDialog } from "./projects-command-dialog";
@@ -24,27 +26,42 @@ export const ProjectsView = () => {
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const [newProjectDialogOpen, setNewProjectDialogOpen] = useState(false);
 
+  const { isAuthenticated, isLoading, requireAuth } = useRequireAuth();
+
+  const openCommandDialog = useMemo(
+    () => requireAuth(() => setCommandDialogOpen(true)),
+    [requireAuth],
+  );
+  const openImportDialog = useMemo(
+    () => requireAuth(() => setImportDialogOpen(true)),
+    [requireAuth],
+  );
+  const openNewProjectDialog = useMemo(
+    () => requireAuth(() => setNewProjectDialogOpen(true)),
+    [requireAuth],
+  );
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey) {
         if (e.key === "k") {
           e.preventDefault();
-          setCommandDialogOpen(true);
+          openCommandDialog();
         }
         if (e.key === "i") {
           e.preventDefault();
-          setImportDialogOpen(true);
+          openImportDialog();
         }
         if (e.key === "j") {
           e.preventDefault();
-          setNewProjectDialogOpen(true);
+          openNewProjectDialog();
         }
       }
     }
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [openCommandDialog, openImportDialog, openNewProjectDialog]);
 
 
   return (
@@ -61,7 +78,29 @@ export const ProjectsView = () => {
         open={newProjectDialogOpen}
         onOpenChange={setNewProjectDialogOpen}
       />
-      <div className="min-h-screen bg-sidebar flex flex-col items-center justify-center p-6 md:p-16">
+      <div className="relative min-h-screen bg-sidebar flex flex-col items-center justify-center p-6 md:p-16">
+
+        <div className="absolute top-0 right-0 flex items-center gap-2 p-4 md:p-6">
+          {!isLoading && (
+            isAuthenticated ? (
+              <UserButton />
+            ) : (
+              <>
+                <SignInButton mode="modal">
+                  <Button variant="ghost" size="sm">
+                    Sign in
+                  </Button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <Button size="sm">
+                    Sign up
+                  </Button>
+                </SignUpButton>
+              </>
+            )
+          )}
+        </div>
+
         <div className="w-full max-w-sm mx-auto flex flex-col gap-4 items-center">
 
           <div className="flex justify-between gap-4 w-full items-center">
@@ -82,7 +121,7 @@ export const ProjectsView = () => {
             <div className="grid grid-cols-2 gap-2">
               <Button
                 variant="outline"
-                onClick={() => setNewProjectDialogOpen(true)}
+                onClick={openNewProjectDialog}
                 className="h-full items-start justify-start p-4 bg-background border flex flex-col gap-6 rounded-none"
               >
                 <div className="flex items-center justify-between w-full">
@@ -99,7 +138,7 @@ export const ProjectsView = () => {
               </Button>
               <Button
                 variant="outline"
-                onClick={() => setImportDialogOpen(true)}
+                onClick={openImportDialog}
                 className="h-full items-start justify-start p-4 bg-background border flex flex-col gap-6 rounded-none"
               >
                 <div className="flex items-center justify-between w-full">
@@ -116,7 +155,7 @@ export const ProjectsView = () => {
               </Button>
             </div>
 
-            <ProjectsList onViewAll={() => setCommandDialogOpen(true)} />
+            <ProjectsList onViewAll={openCommandDialog} />
 
           </div>
 
